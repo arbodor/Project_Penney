@@ -68,7 +68,7 @@ def load_data(file_path: str) -> np.ndarray:
     data = np.load(file_path)
     return data
 
-def hn_game(deck: np.ndarray, p1_triple: str, p2_triple: str) -> np.ndarray:
+def hn_game_og(deck: np.ndarray, p1_triple: str, p2_triple: str) -> np.ndarray:
     """The HN Randomness game is played as follows, with a traditional deck of cards, where each player
     selects a triple of the colors black and red (e.g. RBR, BBB, BRR). 
     Turn the cards over one at a time, placing them in a line, until one of the chosen triples appears. 
