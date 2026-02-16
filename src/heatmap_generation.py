@@ -3,7 +3,7 @@ import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 
-# Create heatmap
+# Create heatmap; percentage values could be useful here, for the sake of clarity
 def create_heatmap(data:pd.DataFrame, save_path:str) -> str:
     '''
     Creates a heatmap out of the data frame of integers holding the win rates (percentages) after scoring all 
