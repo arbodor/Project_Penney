@@ -31,16 +31,16 @@ def create_heatmap(data:pd.DataFrame) -> str:
         the folder identified in the required save_path argument.
     '''
     # need to add custom annotations
-    heatmap = sns.heatmap(data, annot=True, fmt=".2f", cmap='crest', vmin = __, vmax = __)
+    heatmap = sns.heatmap(data, annot=True, fmt=".2f", cmap='Blues', vmin=0, vmax=100, cbar=False, square=True)
     plt.xlabel("My choice")
     plt.ylabel("Opponent's choice")
 
     #if hn_version = og:
         #plt.title("Percentage of Games Won (by Choice), Original Version")
-        #save_path = 'figures/HN_Heatmap_Original.png'
+        #save_path = 'figures/HN_Heatmap_Original.svg'
     #elif hn_version = ron:
         #plt.title("Percentage of Games Won (by Choice), Ron's Version")
-        #save_path = 'figures/HN_Heatmap_Ron's.png'
+        #save_path = 'figures/HN_Heatmap_Ron's.svg'
 
     heatmap.savefig(save_path, dpi=300, bbox_inches='tight') 
 
