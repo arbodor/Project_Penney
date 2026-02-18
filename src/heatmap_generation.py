@@ -3,19 +3,27 @@ import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 
+# Load processed arrays of wins and ties
 def load_data(file_path:str) -> pd.DataFrame:
     '''
-    Loads a dataset of card sequences from a specified file path.
+    Loads four arrays of card sequences from the data folder.
     Args:
         file_path (str): The path to the file containing the dataset.
     Returns:
-        pd.DataFrame: A pandas data frame containing the average scores.
+        og_wins (pd.DataFrame): A data frame containing the win percentages for each card combination for the original version of the game.
+        og_ties (pd.DataFrame): A data frame containing the tie percentages for each card combination for the original version of the game.
+        ron_wins (pd.DataFrame): A data frame containing the win percentages for each card combination for Ron's version of the game.
+        ron_ties (pd.DataFrame): A data frame containing the tie percentages for each card combination for Ron's version of the game.
     '''
-    df = np.load(file_path)
-    return df
+    og_wins = np.load(file_path)
+    og_ties = np.load(file_path)
+    ron_wins = np.load(file_path)
+    ron_ties = np.load(file_path)
+    
+    return
 
 # Create heatmap; percentage values could be useful here, for the sake of clarity
-def create_heatmap(data:pd.DataFrame) -> str:
+def create_heatmap(win_data:pd.DataFrame, tie_data:pd.DataFrame) -> str:
     '''
     Creates a heatmap out of the data frame of integers holding the win rates (percentages) after scoring all 
     provided samples.
@@ -31,7 +39,7 @@ def create_heatmap(data:pd.DataFrame) -> str:
         the folder identified in the required save_path argument.
     '''
     # need to add custom annotations
-    heatmap = sns.heatmap(data, annot=True, fmt=".2f", cmap='Blues', vmin=0, vmax=100, cbar=False, square=True)
+    heatmap = sns.heatmap(win_data, annot=True, fmt=".2f", cmap='Blues', vmin=0, vmax=100, cbar=False, square=True)
     plt.xlabel("My choice")
     plt.ylabel("Opponent's choice")
 
