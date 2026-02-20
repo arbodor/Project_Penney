@@ -104,10 +104,10 @@ def ronzor_game(deck: np.ndarray, p1_triple: tuple, p2_triple: tuple) -> np.ndar
     
     return [(p1_triple,p2_triple), (p1_score,p2_score)]
 
-def play_games(file_path: str, random_state: int = None) -> list:
+def play_games(file_name: str, random_state: int = None) -> list:
     """Simulates a specified number of HN Randomness games and calculates the average score for each possible triple of colors.
     Args:
-        file_path (str): The path to the file containing the dataset.
+        file_name (str): The name of the file containing the dataset.
         random_state (int, optional): A random seed for reproducibility. Defaults to None.
     Returns:
         dict: A dictionary containing the average score for each possible triple of colors.
@@ -119,7 +119,7 @@ def play_games(file_path: str, random_state: int = None) -> list:
         rng= np.random.default_rng()
 
     #load the dataset of card sequences from the specified file path
-    data=load_data(file_path)
+    data=load_data(f'data/{file_name}')
     
     #Determine the number of games to simulate based on the number of card sequences in the dataset
     num_decks=data.shape[0]
@@ -150,12 +150,12 @@ def summarize_results(results: list) -> pd.DataFrame:
             ties_arr[TRIPLES.index(result[0][0]), TRIPLES.index(result[0][1])] += 1
     return wins_arr, ties_arr
 
-def save_data(results: np.array, file_path: str) -> None:
+def save_data(results: np.array, file_name: str) -> None:
     """Saves the results of multiple Penney games to a specified file path.
     Args:
         results (list): A list of lists containing the scores for each game.
-        file_path (str): The path to the file where the results will be saved.
+        file_name (str): The name of the file where the results will be saved.
     """
-    np.save(file_path, results)
+    np.save(f'data/{file_name}', results)
 
 
