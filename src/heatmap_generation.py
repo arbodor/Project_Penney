@@ -3,6 +3,7 @@ import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 
+# TRIPLES = ['BBB','BBR','BRB','BRR','RRR','RRB','RBR','RBB']
 # Load processed arrays of wins and ties
 def load_data(file_path:str) -> pd.DataFrame:
     '''
