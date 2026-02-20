@@ -58,7 +58,7 @@ def hn_game(deck: np.ndarray, p1_triple: str, p2_triple: str) -> np.ndarray:
         card_num+=1
     
     #Return the final scores for both players as a dictionary
-    return {p1_triple: int(p1_score > p2_score), p2_triple: int(p2_score > p1_score)}
+    return [(p1_triple,p2_triple), (p1_score,p2_score)]
 
 def ronzor_game(deck: np.ndarray, p1_triple: str, p2_triple: str) -> np.ndarray:
     """The Ronzor game is played as follows, with a traditional deck of cards, where each player
@@ -102,9 +102,7 @@ def ronzor_game(deck: np.ndarray, p1_triple: str, p2_triple: str) -> np.ndarray:
         
         card_num+=1
     
-    #Return the final scores for both players as a dictionary
-    print({p1_triple: int(p1_score > p2_score), p2_triple: int(p2_score > p1_score)})
-    return {p1_triple: int(p1_score > p2_score), p2_triple: int(p2_score > p1_score)}
+    return [(p1_triple,p2_triple), (p1_score,p2_score)]
 
 def play_games(file_path: str, random_state: int = None) -> list:
     """Simulates a specified number of HN Randomness games and calculates the average score for each possible triple of colors.
@@ -135,23 +133,29 @@ def play_games(file_path: str, random_state: int = None) -> list:
             results_ron[i*NUM_TRIPLES_PAIRS + j] = ronzor_game(deck, p1_triples, p2_triples) 
     return results_hn, results_ron
 def summarize_results(results: list) -> pd.DataFrame:
-    """Summarizes the results of multiple HN Randomness games by calculating the win probability for each possible triple of colors.
+    """Summarizes the results of multiple Penney games by calculating the win probability for each possible triple of colors.
     Args:
-        results (list): A list of dictionaries containing the scores for each game.
+        results (list): A list of lists containing the scores for each game.
     Returns:
         pd.DataFrame: A DataFrame containing the win probability for each possible triple of colors.
     """
     #Initialize a DataFrame to hold the win probability for each possible triple of colors
-    df = pd.DataFrame(index=TRIPLES, columns=TRIPLES, data=0)
-    
+    wins_arr = np.array([[0]*len(TRIPLES) for _ in range(len(TRIPLES))])
+    ties_arr = np.array([[0]*len(TRIPLES) for _ in range(len(TRIPLES))])
+
     #Accumulate the scores for each game by iterating through the results and updating the corresponding entries in the DataFrame
     for result in results:
-        df.loc[list(result.keys())[0], list(result.keys())[1]] += list(result.values())[0]
-    
-    #Normalize the DataFrame by dividing each entry by the total number of games played to obtain the average score for each possible triple of colors
-    df=df/(len(results)/56)
-    return df
+        wins_arr[TRIPLES.index(result[0][0]), TRIPLES.index(result[0][1])] += int(result[1][0]>result[1][1])
+        if result[1][0] == result[1][1]:
+            ties_arr[TRIPLES.index(result[0][0]), TRIPLES.index(result[0][1])] += 1
+    return wins_arr, ties_arr
 
- 
+def save_data(results: np.array, file_path: str) -> None:
+    """Saves the results of multiple Penney games to a specified file path.
+    Args:
+        results (list): A list of lists containing the scores for each game.
+        file_path (str): The path to the file where the results will be saved.
+    """
+    np.save(file_path, results)
 
 
