@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 
 # Define the possible triples of colors (red and black)
-TRIPLES = ['BBB','BBR','BRB','BRR','RRR','RRB','RBR','RBB']
+TRIPLES = [(0,0,0),(0,0,1),(0,1,0),(0,1,1),(1,0,0),(1,0,1),(1,1,0),(1,1,1)]
 TRIPLES_PAIRS =[(t1, t2) for t1 in TRIPLES for t2 in TRIPLES if t1 != t2]
 NUM_TRIPLES_PAIRS = len(TRIPLES_PAIRS)
 
@@ -18,7 +18,7 @@ def load_data(file_path: str) -> np.ndarray:
 
 
 
-def hn_game(deck: np.ndarray, p1_triple: str, p2_triple: str) -> np.ndarray:
+def hn_game(deck: np.ndarray, p1_triple: tuple, p2_triple: tuple) -> np.ndarray:
     """The HN Randomness game is played as follows, with a traditional deck of cards, where each player
     selects a triple of the colors black and red (e.g. RBR, BBB, BRR). 
     Turn the cards over one at a time, placing them in a line, until one of the chosen triples appears. 
@@ -35,7 +35,7 @@ def hn_game(deck: np.ndarray, p1_triple: str, p2_triple: str) -> np.ndarray:
 
     #Validate the input triples for both players to ensure they are valid and not the same
     if p1_triple not in TRIPLES or p2_triple not in TRIPLES:
-        raise ValueError("Invalid triple. Please choose from the following: 'BBB','BBR','BRB','BRR','RRR','RRB','RBR','RBB'.")
+        raise ValueError("Invalid triple. Please choose from the following: (0,0,0),(0,0,1),(0,1,0),(0,1,1),(1,0,0),(1,0,1),(1,1,0),(1,1,1).")
     
     elif p1_triple == p2_triple:
         raise ValueError("Both players cannot choose the same triple. Please choose different triples for each player.")
@@ -43,7 +43,7 @@ def hn_game(deck: np.ndarray, p1_triple: str, p2_triple: str) -> np.ndarray:
     #Iterate through the deck of cards, checking for the presence of either player's chosen triple.
     card_num=0
     while card_num<50:
-        triple = ''.join(['R' if c == 0 else 'B' for c in deck[card_num:card_num+3]])
+        triple = tuple(deck[card_num:card_num+3])
         
         #If player 1's triple is found, increment player 1's score and move the card number forward by 2 to skip the next two cards (as they are part of the triple).
         #If player 2's triple is found, increment player 2's score and move the card
@@ -60,7 +60,7 @@ def hn_game(deck: np.ndarray, p1_triple: str, p2_triple: str) -> np.ndarray:
     #Return the final scores for both players as a dictionary
     return [(p1_triple,p2_triple), (p1_score,p2_score)]
 
-def ronzor_game(deck: np.ndarray, p1_triple: str, p2_triple: str) -> np.ndarray:
+def ronzor_game(deck: np.ndarray, p1_triple: tuple, p2_triple: tuple) -> np.ndarray:
     """The Ronzor game is played as follows, with a traditional deck of cards, where each player
     selects a triple of the colors black and red (e.g. RBR, BBB, BRR). 
     Turn the cards over one at a time, placing them in a line, until one of the chosen triples appears. 
@@ -77,7 +77,7 @@ def ronzor_game(deck: np.ndarray, p1_triple: str, p2_triple: str) -> np.ndarray:
 
     #Validate the input triples for both players to ensure they are valid and not the same
     if p1_triple not in TRIPLES or p2_triple not in TRIPLES:
-        raise ValueError("Invalid triple. Please choose from the following: 'BBB','BBR','BRB','BRR','RRR','RRB','RBR','RBB'.")
+        raise ValueError("Invalid triple. Please choose from the following: (0,0,0),(0,0,1),(0,1,0),(0,1,1),(1,0,0),(1,0,1),(1,1,0),(1,1,1).")
     
     elif p1_triple == p2_triple:
         raise ValueError("Both players cannot choose the same triple. Please choose different triples for each player.")
@@ -86,7 +86,7 @@ def ronzor_game(deck: np.ndarray, p1_triple: str, p2_triple: str) -> np.ndarray:
     card_num=0
     len_trick=0
     while card_num<50:
-        triple = ''.join(['R' if c == 0 else 'B' for c in deck[card_num:card_num+3]])
+        triple = tuple(deck[card_num:card_num+3])
         len_trick += 1
         #If player 1's triple is found, increment player 1's score and move the card number forward by 2 to skip the next two cards (as they are part of the triple).
         #If player 2's triple is found, increment player 2's score and move the card

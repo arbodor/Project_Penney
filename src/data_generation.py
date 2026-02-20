@@ -57,5 +57,4 @@ def generate_data(num_samples: int, random_state: int = None, save_path: str = N
         np.save(save_path, data)
     
     return data
-    
-    
+
