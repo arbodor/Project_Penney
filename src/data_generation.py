@@ -23,14 +23,14 @@ def generate_deck(random_state: int = None)-> np.ndarray:
     return cards
 
 
-def generate_data(num_samples: int, random_state: int = None, save_path: str = None) -> np.ndarray:
+def generate_data(num_samples: int, random_state: int = None, save_name: str = None) -> np.ndarray:
     """Generates a dataset of card sequences.
     Each sample in the dataset is a sequence of 52 cards, where each card is represented as 0 (red) or 1 (black).
     The order of the cards in each sequence is shuffled randomly.
     Args:
         num_samples (int): The number of samples to generate.
         random_state (int, optional): A seed for the random number generator to ensure reproducibility. Defaults to None.
-        save_path (str, optional): The path to save the generated dataset. Defaults to None.
+        save_name (str, optional): The name of the file to save the generated dataset. Defaults to None.
     Returns:
         np.ndarray: A numpy array of shape (num_samples, 52) containing the generated card sequences.
     """
@@ -52,9 +52,9 @@ def generate_data(num_samples: int, random_state: int = None, save_path: str = N
         deck = generate_deck(random_state=seeds[i])
         data[i] = deck
 
-    #Save the generated dataset to a file if a save path is provided
-    if save_path is not None:
-        np.save(save_path, data)
+    #Save the generated dataset to a file if a save name is provided
+    if save_name is not None:
+        np.save(f'data/{save_name}', data)
     
     return data
 
