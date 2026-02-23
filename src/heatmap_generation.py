@@ -3,11 +3,20 @@ import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 
-# TRIPLES = ['BBB','BBR','BRB','BRR','RBB','RBR','RRB','RRR']
-# TRIPLES = [(0,0,0),(0,0,1),(0,1,0),(0,1,1),(1,0,0),(1,0,1),(1,1,0),(1,1,1)]
+def load_shape(file_path:str) -> int:
+    '''
+    Load a wins_array from data_generation.py and get the shape of it.
+    Args:
+        file_path (str): The path to the file containing the wins array.
+    Returns:
+        total_decks (int): Number of decks, taken from the shape of the wins array.
+    '''
+    arr = 'data/card_sequences'
+    total_decks = arr.size
+    return total_decks
 
 # Load processed arrays of wins and ties
-def load_arrays(file_path:str) -> pd.DataFrame:
+def load_arrays(file_path:str) -> np.array:
     '''
     Loads four arrays of card sequences from the data folder.
     Args:
@@ -51,7 +60,7 @@ def hn_heatmap(hn_wins:np.array, hn_ties:np.array) -> str:
     heatmap = sns.heatmap(df, annot=True, fmt=".0f", cmap='Blues', vmin=0, vmax=100, cbar=False, square=False)
     plt.xlabel("My choice")
     plt.ylabel("Opponent's choice")
-    plt.title("My Chance of Win(Draw) by Cards (og)")
+    plt.title("My Chance of Win(Draw) by Cards")
     heatmap.savefig(hn_save_path, dpi=300, bbox_inches='tight') 
 
     return(f'Original version heatmap saved to {hn_save_path}.')
@@ -76,9 +85,9 @@ def ron_heatmap(ron_wins:np.array, ron_ties:np.array) -> str:
     heatmap = sns.heatmap(df, annot=True, fmt=".0f", cmap='Blues', vmin=0, vmax=100, cbar=False, square=False)
     plt.xlabel("My choice")
     plt.ylabel("Opponent's choice")
-    plt.title("My Chance of Win(Draw) by Tricks (Ron)")
+    plt.title("My Chance of Win(Draw) by Tricks, N = {total_decks}")
     heatmap.savefig(ron_save_path, dpi=300, bbox_inches='tight') 
 
-    return(f'Original version heatmap saved to {ron_save_path}. Ron version heatmap saved to {ron_save_path}')
+    return(f'Ron version heatmap saved to {ron_save_path}')
 
-# to do: annotations, grey out the diagonal, update title with number of decks played
+# to do: annotations, grey out the diagonal
