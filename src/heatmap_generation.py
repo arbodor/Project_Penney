@@ -3,18 +3,6 @@ import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 
-def load_shape(file_path:str) -> int:
-    '''
-    Load a wins_array from data_generation.py and get the shape of it.
-    Args:
-        file_path (str): The path to the file containing the wins array.
-    Returns:
-        total_decks (int): Number of decks, taken from the shape of the wins array.
-    '''
-    arr = 'data/card_sequences'
-    total_decks = arr.size
-    return total_decks
-
 # Load processed arrays of wins and ties
 def load_arrays(file_path:str) -> np.array:
     '''
@@ -39,90 +27,98 @@ def load_arrays(file_path:str) -> np.array:
 
     return(f'Arrays loaded from {hnWin_path},{hnTie_path},{ronWin_path},{ronTie_path}.')
 
-def hn_annotations(hn_wins:np.array, hn_ties:np.array, N_BITS=3) -> np.array:
+def hn_heatmap(hn_wins:np.array, hn_ties:np.array, N_BITS=3) -> np.array:
     '''
-    Creates an array of custom annotations (in the form of 'wins(ties)'for the original version heatmap.
+    Creates a heatmap out of the array of integers holding the win rates (percentages) for the original game version after scoring all 
+    provided decks. Heatmap contains custom annotations, and it contains a masked diagonal because it is impossible for both 
+    players to choose the same sequence of red/black cards.
+
     Args:
-        hn_wins (np.array): A numpy array of the win rates for the original game version.
-        hn_ties (np.array): A numpy array of the tie rates for the original game version.
-        N_BITS (int): number of bits?
+        hn_wins (np.array): An array of integers containing the win rates.
+        hn_ties (np.array): An array of integers containing the tie rates.
+        N_BITS (np.array): An integer value of the number of bits? Default is set to 3.
+
     Returns:
-        hn_annot (np.array): An array of the custom annotations to go into the hn_heatmap function.
+        String confirming heatmap creation and showing the file path where the heatmap can be found.
     '''
+    # The final save path for the heatmap
+    hn_save_path = 'figures/hn_Heatmap.svg'
+
+    # Get the number of decks played so far to include in the title of the heatmap
+    card_seq_path = 'data/card_sequences'
+    card_seq_arr = np.load(card_seq_path)
+    total_decks = card_seq_arr.size
+    
+    # Create annotations
     N_BITS=3
     hn_annot = np.full(shape=hn_wins.shape, fill_value='', dtype='<U6')
     for i in range(2**N_BITS):
         for j in range(2**N_BITS):
             hn_annot[i,j] = f'{round(hn_wins[i,j]*100)}({round(hn_ties[i,j]*100)})'
 
-    return hn_annot
+    # Set diagonal of wins array to NaN to be masked out
+    num_col = hn_wins.shape[0]
+    for i in range(num_col):
+        hn_wins[i,i] = np.nan
 
-def ron_annotations(ron_wins:np.array, ron_ties:np.array, N_BITS=3) -> np.array:
+    # Convert the wins array into a DataFrame for heatmap creation
+    axis_labels = ['BBB','BBR','BRB','BRR','RBB','RBR','RRB','RRR']
+    df = pd.DataFrame(hn_wins, columns=axis_labels, index=axis_labels)
+
+    # Create heatmap
+    heatmap = sns.heatmap(data=df, annot=hn_annot, annot_kws={"size":7}, fmt='', cmap='Blues', linewidths=0.5, linecolor='white', vmin=0, vmax=1, cbar=False, square=True)
+    heatmap.set_facecolor('lightgrey')
+    plt.xlabel("My choice")
+    plt.ylabel("Opponent's choice")
+    plt.title(f"My Chance of Win(Draw)\nby Cards\nDecks = {total_decks}")
+    heatmap.savefig(hn_save_path,dpi=300,bbox_inches='tight')
+    
+    return(f"Heatmap for original version created. Heatmap saved to {hn_save_path}")
+
+def ron_heatmap(ron_wins:np.array, ron_ties:np.array, N_BITS=3) -> str:
     '''
-        Creates an array of custom annotations (in the form of 'wins(ties)'for the ron version heatmap.
+    Creates a heatmap out of the array of integers holding the win rates (percentages) for Ron's version of the game after scoring all 
+    provided decks. Heatmap contains custom annotations, and it contains a masked diagonal because it is impossible for both 
+    players to choose the same sequence of red/black cards.
+
     Args:
-        hn_wins (np.array): A numpy array of the win rates for the ron game version.
-        hn_ties (np.array): A numpy array of the tie rates for the ron game version.
-        N_BITS (int): number of bits?
+        ron_wins (np.array): An array of integers containing the win rates.
+        ron_ties (np.array): An array of integers containing the tie rates.
+        N_BITS (np.array): An integer value of the number of bits? Default is set to 3.
+
     Returns:
-        ron_annot (np.array): An array of the custom annotations to go into the ron_heatmap function.
+        String confirming heatmap creation and showing the file path where the heatmap can be found.
     '''
+    # The final save path for the heatmap
+    ron_save_path = 'figures/ron_Heatmap.svg'
+
+    # Get the number of decks played so far to include in the title of the heatmap
+    card_seq_path = 'data/card_sequences'
+    card_seq_arr = np.load(card_seq_path)
+    total_decks = card_seq_arr.size
+    
+    # Create annotations
     N_BITS=3
     ron_annot = np.full(shape=ron_wins.shape, fill_value='', dtype='<U6')
     for i in range(2**N_BITS):
         for j in range(2**N_BITS):
             ron_annot[i,j] = f'{round(ron_wins[i,j]*100)}({round(ron_ties[i,j]*100)})'
 
-    return ron_annot
+    # Set diagonal of wins array to NaN to be masked out
+    num_col = ron_wins.shape[0]
+    for i in range(num_col):
+        ron_wins[i,i] = np.nan
 
-def hn_heatmap(hn_wins:np.array, hn_ties:np.array, hn_annot:np.array) -> str:
-    '''
-    Creates a heatmap out of the array of integers holding the original game version win rates (percentages) after scoring all 
-    provided samples.
-
-    Arguments:
-        data (np.array): An array of integers containing the win rates.
-    Returns:
-        String: A statement confirming that the heatmap was saved to the filepath provided in the required 
-        save_path argument. Heatmap will show up as an SVG called "hn_Heatmap.svg" (for the original version of the HN game) in 
-        the folder identified in the required save_path argument.
-    '''
-    hn_save_path = 'figures/hn_Heatmap.svg'
-
-    axis_labels = ['BBB','BBR','BRB','BRR','RBB','RBR','RRB','RRR']
-    df = pd.DataFrame(hn_wins, columns=axis_labels, index=axis_labels)
-
-    heatmap = sns.heatmap(df, annot=hn_annot, fmt='', cmap='Blues', vmin=0, vmax=100, cbar=False, square=False)
-    plt.xlabel("My choice")
-    plt.ylabel("Opponent's choice")
-    plt.title("My Chance of Win(Draw) by Cards")
-    heatmap.savefig(hn_save_path, dpi=300, bbox_inches='tight') 
-
-    return(f'Original version heatmap saved to {hn_save_path}.')
-
-def ron_heatmap(ron_wins:np.array, ron_ties:np.array, ron_annot:np.array) -> str:
-    '''
-    Creates a heatmap out of the array of integers holding the ron's game version win rates (percentages) after scoring all 
-    provided samples.
-
-    Arguments:
-        data (np.array): An array of integers containing the win rates.
-    Returns:
-        String: A statement confirming that the heatmap was saved to the filepath provided in the required 
-        save_path argument. Heatmap will show up as an SVG called "ron_Heatmap.svg" (for the original version of the HN game) in 
-        the folder identified in the required save_path argument.
-    '''
-    ron_save_path = 'figures/ron_Heatmap.svg'
-
+    # Convert the wins array into a dataframe for heatmap creation
     axis_labels = ['BBB','BBR','BRB','BRR','RBB','RBR','RRB','RRR']
     df = pd.DataFrame(ron_wins, columns=axis_labels, index=axis_labels)
 
-    heatmap = sns.heatmap(df, annot=ron_annot, fmt='', cmap='Blues', vmin=0, vmax=100, cbar=False, square=False)
+    # Create heatmap
+    heatmap = sns.heatmap(data=df, annot=ron_annot, annot_kws={"size":7}, fmt='', cmap='Blues', linewidths=0.5, linecolor='white', vmin=0, vmax=1, cbar=False, square=False)
+    heatmap.set_facecolor('lightgrey')
     plt.xlabel("My choice")
     plt.ylabel("Opponent's choice")
-    plt.title("My Chance of Win(Draw) by Tricks, N = {total_decks}")
-    heatmap.savefig(ron_save_path, dpi=300, bbox_inches='tight') 
-
-    return(f'Ron version heatmap saved to {ron_save_path}')
-
-# to do: annotations, grey out the diagonal
+    plt.title(f"My Chance of Win(Draw)\nby Tricks\nDecks = {total_decks}")
+    heatmap.savefig(ron_save_path,dpi=300,bbox_inches='tight')
+    
+    return(f"Heatmap for Ron's version created. Heatmap saved to {ron_save_path}")
