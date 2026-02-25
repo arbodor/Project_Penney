@@ -25,7 +25,7 @@ def load_arrays(file_path:str) -> np.array:
     ron_wins = np.load(ronWin_path)
     ron_ties = np.load(ronTie_path)
 
-    return(f'Arrays loaded from {hnWin_path},{hnTie_path},{ronWin_path},{ronTie_path}.')
+    return hn_wins, hn_ties, ron_wins, ron_ties
 
 def hn_heatmap(hn_wins:np.array, hn_ties:np.array, N_BITS=3) -> np.array:
     '''
