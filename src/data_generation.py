@@ -1,5 +1,5 @@
 import numpy as np
-
+import os
 
 def generate_deck(random_state: int = None)-> np.ndarray:
     """Generates a deck of cards represented as a numpy array.
@@ -54,6 +54,8 @@ def generate_data(num_samples: int, random_state: int = None, save_name: str = N
 
     #Save the generated dataset to a file if a save name is provided
     if save_name is not None:
+        if os.path.exists(f'data/{save_name}'):
+            data = np.concatenate([data,np.load(f'data/{save_name}')], axis=0)
         np.save(f'data/{save_name}', data)
     
     return data
