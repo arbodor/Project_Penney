@@ -15,15 +15,21 @@ def load_arrays(file_path:str) -> np.array:
         ron_wins (np.array): An array containing the win percentages for each card combination for Ron's version of the game.
         ron_ties (np.array): An array containing the tie percentages for each card combination for Ron's version of the game.
     '''
+
+    # Get the number of decks played so far to create percentages
+    card_seq_path = 'data/card_sequences'
+    card_seq_arr = np.load(card_seq_path)
+    total_decks = card_seq_arr.size
+
     hnWin_path = 'data/hn_wins.npy'
     hnTie_path = 'data/hn_ties.npy'
     ronWin_path = 'data/ron_wins.npy'
     ronTie_path = 'data/ron_ties.npy'
 
-    hn_wins = np.load(hnWin_path)
-    hn_ties = np.load(hnTie_path)
-    ron_wins = np.load(ronWin_path)
-    ron_ties = np.load(ronTie_path)
+    hn_wins = np.load(hnWin_path) / total_decks
+    hn_ties = np.load(hnTie_path) / total_decks
+    ron_wins = np.load(ronWin_path) / total_decks
+    ron_ties = np.load(ronTie_path) / total_decks
 
     return hn_wins, hn_ties, ron_wins, ron_ties
 
