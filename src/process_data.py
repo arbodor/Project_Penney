@@ -157,8 +157,8 @@ def score_and_save(deck_path: str) -> None:
         deck_path (str): The path to the deck file.
     """
     results_hn, results_ron = play_games(file_name=deck_path, random_state=42)
-    wins_hn, ties_hn = (x/len(results_hn) for x in summarize_results(results_hn))
-    wins_ron, ties_ron = (x/len(results_ron) for x in summarize_results(results_ron))
+    wins_hn, ties_hn =  summarize_results(results_hn)
+    wins_ron, ties_ron =  summarize_results(results_ron)
     for result_type, result in zip(['hn_wins', 'hn_ties', 'ron_wins', 'ron_ties'], 
                                    [wins_hn, ties_hn, wins_ron, ties_ron]):
         if os.path.exists(f'data/{result_type}.npy'):
