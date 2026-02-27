@@ -2,9 +2,9 @@ import numpy as np
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
-
+import os
 # Load processed arrays of wins and ties
-def load_arrays(file_path:str) -> np.array:
+def load_arrays() -> np.array:
     '''
     Loads four arrays of card sequences from the data folder.
     Args:
@@ -17,9 +17,11 @@ def load_arrays(file_path:str) -> np.array:
     '''
 
     # Get the number of decks played so far to create percentages
-    card_seq_path = 'data/card_sequences'
-    card_seq_arr = np.load(card_seq_path)
-    total_decks = card_seq_arr.size
+    
+    card_sequences=[f for f in os.listdir('data') if f.startswith('card_sequences')]
+    total_decks=0
+    for sequence in card_sequences:
+        total_decks+=np.load(f'data/{sequence}').size
 
     hnWin_path = 'data/hn_wins.npy'
     hnTie_path = 'data/hn_ties.npy'
