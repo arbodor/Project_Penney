@@ -1,3 +1,4 @@
+import os
 import numpy as np
 import pandas as pd
 
@@ -148,14 +149,22 @@ def summarize_results(results: list) -> pd.DataFrame:
         wins_arr[TRIPLES.index(result[0][0]), TRIPLES.index(result[0][1])] += int(result[1][0]>result[1][1])
         if result[1][0] == result[1][1]:
             ties_arr[TRIPLES.index(result[0][0]), TRIPLES.index(result[0][1])] += 1
-    return wins_arr, ties_arr
+    return wins_arr, ties_arr 
 
-def save_data(results: np.array, file_name: str) -> None:
+def score_and_save(deck_path: str) -> None:
     """Saves the results of multiple Penney games to a specified file path.
     Args:
-        results (list): A list of lists containing the scores for each game.
-        file_name (str): The name of the file where the results will be saved.
+        deck_path (str): The path to the deck file.
     """
-    np.save(f'data/{file_name}', results)
+    results_hn, results_ron = play_games(file_name=deck_path, random_state=42)
+    wins_hn, ties_hn = (x/len(results_hn) for x in summarize_results(results_hn))
+    wins_ron, ties_ron = (x/len(results_ron) for x in summarize_results(results_ron))
+    for result_type, result in zip(['hn_wins', 'hn_ties', 'ron_wins', 'ron_ties'], 
+                                   [wins_hn, ties_hn, wins_ron, ties_ron]):
+        if os.path.exists(f'data/{result_type}.npy'):
+            result = result+np.load(f'data/{result_type}.npy')
+        np.save(f'data/{result_type}.npy', result)
+
+
 
 
