@@ -12,6 +12,7 @@ def main():
     save_data(ties_hn, 'data/hn_ties.npy')
     save_data(wins_ron, 'data/ron_wins.npy')
     save_data(ties_ron, 'data/ron_ties.npy')
+    
 
 
 
