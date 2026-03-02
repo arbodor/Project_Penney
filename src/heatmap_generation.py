@@ -74,7 +74,7 @@ def hn_heatmap(hn_wins:np.array, hn_ties:np.array, total_decks:int, N_BITS=3) ->
     plt.xlabel("My choice")
     plt.ylabel("Opponent's choice")
     plt.title(f"My Chance of Win(Draw)\nby Cards\nDecks = {total_decks}")
-    heatmap.savefig(hn_save_path,dpi=300,bbox_inches='tight')
+    plt.savefig(hn_save_path,dpi=300,bbox_inches='tight')
     
     return(f"Heatmap for original version created. Heatmap saved to {hn_save_path}")
 
@@ -117,6 +117,6 @@ def ron_heatmap(ron_wins:np.array, ron_ties:np.array, total_decks:int, N_BITS=3)
     plt.xlabel("My choice")
     plt.ylabel("Opponent's choice")
     plt.title(f"My Chance of Win(Draw)\nby Tricks\nDecks = {total_decks}")
-    heatmap.savefig(ron_save_path,dpi=300,bbox_inches='tight')
+    plt.savefig(ron_save_path,dpi=300,bbox_inches='tight')
     
     return(f"Heatmap for Ron's version created. Heatmap saved to {ron_save_path}")
