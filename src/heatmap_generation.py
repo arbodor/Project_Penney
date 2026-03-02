@@ -10,10 +10,10 @@ def load_arrays() -> np.array:
     Args:
         file_path (str): The path to the file containing the dataset.
     Returns:
-        hn_wins (np.array): An array containing the win percentages for each card combination for the original version of the game.
-        hn_ties (np.array): An array containing the tie percentages for each card combination for the original version of the game.
-        ron_wins (np.array): An array containing the win percentages for each card combination for Ron's version of the game.
-        ron_ties (np.array): An array containing the tie percentages for each card combination for Ron's version of the game.
+        hn_wins (np.array): An array containing the win rates for each card combination for the original version of the game.
+        hn_ties (np.array): An array containing the tie rates for each card combination for the original version of the game.
+        ron_wins (np.array): An array containing the win rates for each card combination for Ron's version of the game.
+        ron_ties (np.array): An array containing the tie rates for each card combination for Ron's version of the game.
     '''
 
     # Get the number of decks played so far to create percentages
@@ -28,14 +28,14 @@ def load_arrays() -> np.array:
     ronWin_path = 'data/ron_wins.npy'
     ronTie_path = 'data/ron_ties.npy'
 
-    hn_wins = np.load(hnWin_path) / total_decks
-    hn_ties = np.load(hnTie_path) / total_decks
-    ron_wins = np.load(ronWin_path) / total_decks
-    ron_ties = np.load(ronTie_path) / total_decks
+    hn_wins = np.load(hnWin_path) / (56 * total_decks)
+    hn_ties = np.load(hnTie_path) / (56 * total_decks)
+    ron_wins = np.load(ronWin_path) / (56 * total_decks)
+    ron_ties = np.load(ronTie_path) / (56 * total_decks)
 
-    return hn_wins, hn_ties, ron_wins, ron_ties
+    return hn_wins, hn_ties, ron_wins, ron_ties, total_decks
 
-def hn_heatmap(hn_wins:np.array, hn_ties:np.array, N_BITS=3) -> np.array:
+def hn_heatmap(hn_wins:np.array, hn_ties:np.array, total_decks:int, N_BITS=3) -> np.array:
     '''
     Creates a heatmap out of the array of integers holding the win rates (percentages) for the original game version after scoring all 
     provided decks. Heatmap contains custom annotations, and it contains a masked diagonal because it is impossible for both 
@@ -51,11 +51,6 @@ def hn_heatmap(hn_wins:np.array, hn_ties:np.array, N_BITS=3) -> np.array:
     '''
     # The final save path for the heatmap
     hn_save_path = 'figures/hn_Heatmap.svg'
-
-    # Get the number of decks played so far to include in the title of the heatmap
-    card_seq_path = 'data/card_sequences'
-    card_seq_arr = np.load(card_seq_path)
-    total_decks = card_seq_arr.size
     
     # Create annotations
     N_BITS=3
@@ -83,7 +78,7 @@ def hn_heatmap(hn_wins:np.array, hn_ties:np.array, N_BITS=3) -> np.array:
     
     return(f"Heatmap for original version created. Heatmap saved to {hn_save_path}")
 
-def ron_heatmap(ron_wins:np.array, ron_ties:np.array, N_BITS=3) -> str:
+def ron_heatmap(ron_wins:np.array, ron_ties:np.array, total_decks:int, N_BITS=3) -> str:
     '''
     Creates a heatmap out of the array of integers holding the win rates (percentages) for Ron's version of the game after scoring all 
     provided decks. Heatmap contains custom annotations, and it contains a masked diagonal because it is impossible for both 
@@ -99,11 +94,6 @@ def ron_heatmap(ron_wins:np.array, ron_ties:np.array, N_BITS=3) -> str:
     '''
     # The final save path for the heatmap
     ron_save_path = 'figures/ron_Heatmap.svg'
-
-    # Get the number of decks played so far to include in the title of the heatmap
-    card_seq_path = 'data/card_sequences'
-    card_seq_arr = np.load(card_seq_path)
-    total_decks = card_seq_arr.size
     
     # Create annotations
     N_BITS=3
