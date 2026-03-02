@@ -28,10 +28,10 @@ def load_arrays() -> np.array:
     ronWin_path = 'data/ron_wins.npy'
     ronTie_path = 'data/ron_ties.npy'
 
-    hn_wins = np.load(hnWin_path) / (56 * total_decks)
-    hn_ties = np.load(hnTie_path) / (56 * total_decks)
-    ron_wins = np.load(ronWin_path) / (56 * total_decks)
-    ron_ties = np.load(ronTie_path) / (56 * total_decks)
+    hn_wins = np.load(hnWin_path) / (total_decks)
+    hn_ties = np.load(hnTie_path) / (total_decks)
+    ron_wins = np.load(ronWin_path) / (total_decks)
+    ron_ties = np.load(ronTie_path) / (total_decks)
 
     return hn_wins, hn_ties, ron_wins, ron_ties, total_decks
 
