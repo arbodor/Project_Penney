@@ -21,7 +21,7 @@ def load_arrays() -> np.array:
     card_sequences=[f for f in os.listdir('data') if f.startswith('card_sequences')]
     total_decks=0
     for sequence in card_sequences:
-        total_decks+=np.load(f'data/{sequence}').size
+        total_decks+=np.load(f'data/{sequence}').shape[0]
 
     hnWin_path = 'data/hn_wins.npy'
     hnTie_path = 'data/hn_ties.npy'
