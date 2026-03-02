@@ -113,7 +113,7 @@ def ron_heatmap(ron_wins:np.array, ron_ties:np.array, total_decks:int, N_BITS=3)
     df = pd.DataFrame(ron_wins, columns=axis_labels, index=axis_labels)
 
     # Create heatmap
-    heatmap = sns.heatmap(data=df, annot=ron_annot, annot_kws={"size":7}, fmt='', cmap='Blues', linewidths=0.5, linecolor='white', vmin=0, vmax=1, cbar=False, square=False)
+    heatmap = sns.heatmap(data=df, annot=ron_annot, annot_kws={"size":7}, fmt='', cmap='Blues', linewidths=0.5, linecolor='white', vmin=0, vmax=1, cbar=False, square=True)
     heatmap.set_facecolor('lightgrey')
     plt.xlabel("My choice")
     plt.ylabel("Opponent's choice")
