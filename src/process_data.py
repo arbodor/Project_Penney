@@ -130,6 +130,8 @@ def play_games(file_name: str, random_state: int = None) -> list:
     results_ron=[0]*num_decks*NUM_TRIPLES_PAIRS
     for i, deck in enumerate(data):
         for j, (p1_triples, p2_triples) in enumerate(TRIPLES_PAIRS):
+            if (i*NUM_TRIPLES_PAIRS + j) % 100000 == 0:
+                print(f"Scoring game {i*NUM_TRIPLES_PAIRS + j} out of {num_decks*NUM_TRIPLES_PAIRS}...")
             results_hn[i*NUM_TRIPLES_PAIRS + j] = hn_game(deck, p1_triples, p2_triples)
             results_ron[i*NUM_TRIPLES_PAIRS + j] = ronzor_game(deck, p1_triples, p2_triples) 
     return results_hn, results_ron
@@ -146,9 +148,9 @@ def summarize_results(results: list) -> pd.DataFrame:
 
     #Accumulate the scores for each game by iterating through the results and updating the corresponding entries in the DataFrame
     for result in results:
-        wins_arr[TRIPLES.index(result[0][0]), TRIPLES.index(result[0][1])] += int(result[1][0]>result[1][1])
+        wins_arr[TRIPLES.index(result[0][1]), TRIPLES.index(result[0][0])] += int(result[1][0]>result[1][1])
         if result[1][0] == result[1][1]:
-            ties_arr[TRIPLES.index(result[0][0]), TRIPLES.index(result[0][1])] += 1
+            ties_arr[TRIPLES.index(result[0][1]), TRIPLES.index(result[0][0])] += 1
     return wins_arr, ties_arr 
 
 def score_and_save(deck_path: str) -> None:
