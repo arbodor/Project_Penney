@@ -7,8 +7,10 @@ def main():
     data_files=[f for f in os.listdir('data')]
     clear_data=input('Would you like to clear the data folder before generating new datasets and scoring the results? (y/n): ')
     if clear_data.lower() == 'y':
-        for file in data_files:
-            os.remove(f'data/{file}')
+        clear_data_confirm=input('Are you sure you want to clear the data folder? This action cannot be undone. (y/n): ')
+        if clear_data_confirm.lower() == 'y':  
+            for file in data_files:
+                os.remove(f'data/{file}')
     
     sequence_number=len([f for f in os.listdir('data') if f.startswith('card_sequences')])+1
     while True:
