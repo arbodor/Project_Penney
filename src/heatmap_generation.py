@@ -8,16 +8,16 @@ def load_arrays() -> np.array:
     '''
     Loads four arrays of card sequences from the data folder.
     Args:
-        file_path (str): The path to the file containing the dataset.
+        None
     Returns:
         hn_wins (np.array): An array containing the win rates for each card combination for the original version of the game.
         hn_ties (np.array): An array containing the tie rates for each card combination for the original version of the game.
         ron_wins (np.array): An array containing the win rates for each card combination for Ron's version of the game.
         ron_ties (np.array): An array containing the tie rates for each card combination for Ron's version of the game.
+        total_decks (int): An integer value representing the total number of decks that have been played and scored.
     '''
 
     # Get the number of decks played so far to create percentages
-    
     card_sequences=[f for f in os.listdir('data') if f.startswith('card_sequences')]
     total_decks=0
     for sequence in card_sequences:
@@ -44,6 +44,7 @@ def hn_heatmap(hn_wins:np.array, hn_ties:np.array, total_decks:int, N_BITS=3) ->
     Args:
         hn_wins (np.array): An array of integers containing the win rates.
         hn_ties (np.array): An array of integers containing the tie rates.
+        total_decks(int): The integer value representing the total number of decks that have been played and scored.
         N_BITS (np.array): An integer value of the number of bits? Default is set to 3.
 
     Returns:
@@ -73,7 +74,7 @@ def hn_heatmap(hn_wins:np.array, hn_ties:np.array, total_decks:int, N_BITS=3) ->
     heatmap.set_facecolor('lightgrey')
     plt.xlabel("My choice")
     plt.ylabel("Opponent's choice")
-    plt.title(f"My Chance of Win(Draw)\nby Cards\nDecks = {total_decks}")
+    plt.title(f"My Chance of Win(Draw)\nby Tricks\nDecks = {total_decks}")
     plt.savefig(hn_save_path,dpi=300,bbox_inches='tight')
     plt.close()
     
@@ -88,6 +89,7 @@ def ron_heatmap(ron_wins:np.array, ron_ties:np.array, total_decks:int, N_BITS=3)
     Args:
         ron_wins (np.array): An array of integers containing the win rates.
         ron_ties (np.array): An array of integers containing the tie rates.
+        total_decks(int): The integer value representing the total number of decks that have been played and scored.
         N_BITS (np.array): An integer value of the number of bits? Default is set to 3.
 
     Returns:
@@ -117,7 +119,7 @@ def ron_heatmap(ron_wins:np.array, ron_ties:np.array, total_decks:int, N_BITS=3)
     heatmap.set_facecolor('lightgrey')
     plt.xlabel("My choice")
     plt.ylabel("Opponent's choice")
-    plt.title(f"My Chance of Win(Draw)\nby Tricks\nDecks = {total_decks}")
+    plt.title(f"My Chance of Win(Draw)\nby Cards\nDecks = {total_decks}")
     plt.savefig(ron_save_path,dpi=300,bbox_inches='tight')
     plt.close()
     
