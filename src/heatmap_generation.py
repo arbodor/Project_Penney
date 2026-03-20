@@ -74,7 +74,7 @@ def hn_heatmap(hn_wins:np.array, hn_ties:np.array, total_decks:int, N_BITS=3) ->
     heatmap.set_facecolor('lightgrey')
     plt.xlabel("My choice")
     plt.ylabel("Opponent's choice")
-    plt.title(f"My Chance of Win(Draw)\nby Tricks\nDecks: N =" f'{total_decks:,}')
+    plt.title(f"My Chance of Win(Draw)\nby Tricks\nN =" f'{total_decks:,}')
     plt.savefig(hn_save_path,dpi=300,bbox_inches='tight')
     plt.close()
     
@@ -119,7 +119,7 @@ def ron_heatmap(ron_wins:np.array, ron_ties:np.array, total_decks:int, N_BITS=3)
     heatmap.set_facecolor('lightgrey')
     plt.xlabel("My choice")
     plt.ylabel("Opponent's choice")
-    plt.title(f"My Chance of Win(Draw)\nby Cards\nDecks: N =" f'{total_decks:,}')
+    plt.title(f"My Chance of Win(Draw)\nby Cards\nN =" f'{total_decks:,}')
     plt.savefig(ron_save_path,dpi=300,bbox_inches='tight')
     plt.close()
     
